@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using raminrahimzada;
 
 namespace CalcEngine
 {
@@ -122,34 +123,34 @@ namespace CalcEngine
 #endif
         static object Abs(List<Expression> p)
         {
-            return Math.Abs((double)p[0]);
+            return Math.Abs((decimal)p[0]);
         }
         static object Acos(List<Expression> p)
         {
-            return Math.Acos((double)p[0]);
+            return DecimalMath.Acos((decimal)p[0]);
         }
         static object Asin(List<Expression> p)
         {
-            return Math.Asin((double)p[0]);
+            return DecimalMath.Asin((decimal)p[0]);
         }
         static object Atan(List<Expression> p)
         {
-            return Math.Atan((double)p[0]);
+            return DecimalMath.ATan((decimal)p[0]);
         }
         static object Atan2(List<Expression> p)
         {
-            return Math.Atan2((double)p[0], (double)p[1]);
+            return DecimalMath.Atan2((decimal)p[0], (decimal)p[1]);
         }
         static object Ceiling(List<Expression> p)
         {
-            var value = (double)p[0];
+            var value = (decimal)p[0];
 
             if (p.Count == 1)
             {
                 return Math.Ceiling(value);
             }
 
-            var significance = (double)p[1];
+            var significance = (decimal)p[1];
 
             if (value > 0 && significance < 0)
             {
@@ -160,26 +161,26 @@ namespace CalcEngine
         }
         static object Cos(List<Expression> p)
         {
-            return Math.Cos((double)p[0]);
+            return DecimalMath.Cos((decimal)p[0]);
         }
         static object Cosh(List<Expression> p)
         {
-            return Math.Cosh((double)p[0]);
+            return DecimalMath.Cosh((decimal)p[0]);
         }
         static object Exp(List<Expression> p)
         {
-            return Math.Exp((double)p[0]);
+            return DecimalMath.Exp((decimal)p[0]);
         }
         static object Floor(List<Expression> p)
         {
-            var value = (double)p[0];
+            var value = (decimal)p[0];
 
             if (p.Count == 1)
             {
                 return Math.Floor(value);
             }
 
-            var significance = (double)p[1];
+            var significance = (decimal)p[1];
 
             if (value > 0 && significance < 0)
             {
@@ -190,20 +191,22 @@ namespace CalcEngine
         }
         static object Int(List<Expression> p)
         {
-            return Math.Truncate((double)p[0]);
+            return Math.Truncate((decimal)p[0]);
         }
         static object Ln(List<Expression> p)
         {
-            return Math.Log((double)p[0]);
+            return DecimalMath.Log((decimal)p[0]);
         }
         static object Log(List<Expression> p)
         {
-            var lbase = p.Count > 1 ? (double)p[1] : 10;
-            return Math.Log((double)p[0], lbase);
+            var lbase = p.Count > 1 ? (decimal)p[1] : 10;
+            
+            // TODO: the second param variant doesnt exist in this math library, need to write it or switch lib
+            return DecimalMath.Log((decimal)p[0]);
         }
         static object Log10(List<Expression> p)
         {
-            return Math.Log10((double)p[0]);
+            return DecimalMath.Log10((decimal)p[0]);
         }
         static object Pi(List<Expression> p)
         {
@@ -211,7 +214,7 @@ namespace CalcEngine
         }
         static object Power(List<Expression> p)
         {
-            return Math.Pow((double)p[0], (double)p[1]);
+            return DecimalMath.Power((decimal)p[0], (decimal)p[1]);
         }
         static Random _rnd = new Random();
         static object Rand(List<Expression> p)
@@ -220,7 +223,7 @@ namespace CalcEngine
         }
         static object RandBetween(List<Expression> p)
         {
-            return _rnd.Next((int)(double)p[0], (int)(double)p[1]);
+            return _rnd.Next((int)(decimal)p[0], (int)(decimal)p[1]);
         }
         static object Round(List<Expression> p)
         {
@@ -233,19 +236,19 @@ namespace CalcEngine
         }
         static object Sign(List<Expression> p)
         {
-            return Math.Sign((double)p[0]);
+            return Math.Sign((decimal)p[0]);
         }
         static object Sin(List<Expression> p)
         {
-            return Math.Sin((double)p[0]);
+            return DecimalMath.Sin((decimal)p[0]);
         }
         static object Sinh(List<Expression> p)
         {
-            return Math.Sinh((double)p[0]);
+            return DecimalMath.Sinh((decimal)p[0]);
         }
         static object Sqrt(List<Expression> p)
         {
-            return Math.Sqrt((double)p[0]);
+            return DecimalMath.Sqrt((decimal)p[0]);
         }
         static object Sum(List<Expression> p)
         {
@@ -298,9 +301,9 @@ namespace CalcEngine
             }
 
             // if criteria is a number, straight comparison
-            if (criteria is double)
+            if (criteria is decimal)
             {
-                return (double)value == (double)criteria;
+                return (decimal)value == (decimal)criteria;
             }
 
             // convert criteria to string
@@ -318,9 +321,9 @@ namespace CalcEngine
                     var m = Regex.Match(expression, pattern);
                     if (m.Groups.Count == 4)
                     {
-                        double d;
-                        if (!double.TryParse(m.Groups[1].Value, out d) ||
-                            !double.TryParse(m.Groups[3].Value, out d))
+                        decimal d;
+                        if (!decimal.TryParse(m.Groups[1].Value, out d) ||
+                            !decimal.TryParse(m.Groups[3].Value, out d))
                         {
                             expression = string.Format("\"{0}\"{1}\"{2}\"",
                                 m.Groups[1].Value,
@@ -352,15 +355,15 @@ namespace CalcEngine
         }
         static object Tan(List<Expression> p)
         {
-            return Math.Tan((double)p[0]);
+            return DecimalMath.Tan((decimal)p[0]);
         }
         static object Tanh(List<Expression> p)
         {
-            return Math.Tanh((double)p[0]);
+            return DecimalMath.Tanh((decimal)p[0]);
         }
         static object Trunc(List<Expression> p)
         {
-            return (double)Math.Truncate((double)p[0]);
+            return (decimal)Math.Truncate((decimal)p[0]);
         }
         static object Weighted(List<Expression> p)
         {

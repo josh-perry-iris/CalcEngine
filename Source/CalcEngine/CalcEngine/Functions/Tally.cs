@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections;
+using raminrahimzada;
 
 namespace CalcEngine
 {
     public class Tally
     {
-        protected double _sum, _sum2, _cnt, _min, _max;
+        protected decimal _sum, _sum2, _cnt, _min, _max;
         protected bool _numbersOnly;
 
         public Tally(bool numbersOnly)
@@ -51,20 +52,20 @@ namespace CalcEngine
                 }
             }
 
-            // convert all numeric values to doubles
+            // convert all numeric values to decimals
             if (value != null)
             {
                 var typeCode = Type.GetTypeCode(value.GetType());
                 if (typeCode >= TypeCode.Char && typeCode <= TypeCode.Decimal)
                 {
-                    value = Convert.ChangeType(value, typeof(double), System.Globalization.CultureInfo.CurrentCulture);
+                    value = Convert.ChangeType(value, typeof(decimal), System.Globalization.CultureInfo.CurrentCulture);
                 }
             }
 
             // tally
-            if (value is double)
+            if (value is decimal)
             {
-                var dbl = (double)value;
+                var dbl = (decimal)value;
                 _sum += dbl;
                 _sum2 += dbl * dbl;
                 _cnt++;
@@ -78,31 +79,31 @@ namespace CalcEngine
                 }
             }
         }
-        public double Count() { return _cnt; }
-        public double Sum() { return _sum; }
-        public double Average() { return _sum / _cnt; }
-        public double Min() { return _min; }
-        public double Max() { return _max; }
-        public double Range() { return _max - _min; }
-        public double VarP()
+        public decimal Count() { return _cnt; }
+        public decimal Sum() { return _sum; }
+        public decimal Average() { return _sum / _cnt; }
+        public decimal Min() { return _min; }
+        public decimal Max() { return _max; }
+        public decimal Range() { return _max - _min; }
+        public decimal VarP()
         {
             var avg = Average();
             return _cnt <= 1 ? 0 : _sum2 / _cnt - avg * avg;
         }
-        public double StdP()
+        public decimal StdP()
         {
             var avg = Average();
-            return _cnt <= 1 ? 0 : Math.Sqrt(_sum2 / _cnt - avg * avg);
+            return _cnt <= 1 ? 0 : DecimalMath.Sqrt(_sum2 / _cnt - avg * avg);
         }
-        public double Var()
+        public decimal Var()
         {
             var avg = Average();
             return _cnt <= 1 ? 0 : (_sum2 / _cnt - avg * avg) * _cnt / (_cnt - 1);
         }
-        public double Std()
+        public decimal Std()
         {
             var avg = Average();
-            return _cnt <= 1 ? 0 : Math.Sqrt((_sum2 / _cnt - avg * avg) * _cnt / (_cnt - 1));
+            return _cnt <= 1 ? 0 : DecimalMath.Sqrt((_sum2 / _cnt - avg * avg) * _cnt / (_cnt - 1));
         }
     }
 }

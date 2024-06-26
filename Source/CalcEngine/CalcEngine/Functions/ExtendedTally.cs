@@ -5,16 +5,16 @@ namespace CalcEngine.Functions
 {
     public class ExtendedTally : Tally
     {
-        List<double> _vals;
+        List<decimal> _vals;
 
         public ExtendedTally(bool numbersOnly) : base(numbersOnly)
         {
-            _vals = new List<double>();
+            _vals = new List<decimal>();
         }
 
         public ExtendedTally() : base()
         {
-            _vals = new List<double>();
+            _vals = new List<decimal>();
         }
 
         public override void AddValue(object value)
@@ -36,21 +36,21 @@ namespace CalcEngine.Functions
                 }
             }
 
-            // convert all numeric values to doubles
+            // convert all numeric values to decimals
             if (value != null)
             {
                 var typeCode = Type.GetTypeCode(value.GetType());
                 if (typeCode >= TypeCode.Char && typeCode <= TypeCode.Decimal)
                 {
-                    value = Convert.ChangeType(value, typeof(double), System.Globalization.CultureInfo.CurrentCulture);
-                    _vals.Add((double)value);
+                    value = Convert.ChangeType(value, typeof(decimal), System.Globalization.CultureInfo.CurrentCulture);
+                    _vals.Add((decimal)value);
                 }
             }
 
             // tally
-            if (value is double)
+            if (value is decimal)
             {
-                var dbl = (double)value;
+                var dbl = (decimal)value;
                 _sum += dbl;
                 _sum2 += dbl * dbl;
                 _cnt++;
@@ -65,7 +65,7 @@ namespace CalcEngine.Functions
             }
         }
 
-        public double Median()
+        public decimal Median()
         {
             var assessments = _vals.ToArray();
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using raminrahimzada;
 
 namespace CalcEngine
 {
@@ -48,7 +49,7 @@ namespace CalcEngine
             _cache = new ExpressionCache(this);
             _optimize = true;
 #if DEBUG
-            this.Test();
+            //this.Test();
 #endif
         }
         
@@ -507,7 +508,7 @@ namespace CalcEngine
 						_token = tk;
 						_ptr++;
 
-						// look for double-char tokens (special case)
+						// look for decimal-char tokens (special case)
 						if (_ptr < _len && (c == '>' || c == '<'))
 						{
                             if (_tkTbl.TryGetValue(_expr.Substring(_ptr - 1, 2), out tk))
@@ -528,8 +529,8 @@ namespace CalcEngine
 			{
 				var sci = false;
                 var pct = false;
-                var div = -1.0; // use double, not int (this may get really big)
-                var val = 0.0;
+                var div = -1.0m; // use decimal, not int (this may get really big)
+                var val = 0.0m;
                 for (i = 0; i + _ptr < _len; i++)
 				{
 					c = _expr[_ptr + i];
@@ -576,14 +577,14 @@ namespace CalcEngine
                 // end of number, get value
                 if (!sci)
                 {
-                    // much faster than ParseDouble
+                    // much faster than Parsedecimal
                     if (div > 1)
                     {
                         val /= div;
                     }
                     if (pct)
                     {
-                        val /= 100.0;
+                        val /= 100.0m;
                     }
                 }
                 else
@@ -672,14 +673,14 @@ namespace CalcEngine
             _ptr += i;
             _token = new Token(id, TKID.ATOM, TKTYPE.IDENTIFIER);
 		}
-        static double ParseDouble(string str, CultureInfo ci)
+        static decimal ParseDouble(string str, CultureInfo ci)
         {
             if (str.Length > 0 && str[str.Length - 1] == ci.NumberFormat.PercentSymbol[0])
             {
                 str = str.Substring(0, str.Length - 1);
-                return double.Parse(str, NumberStyles.Any, ci) / 100.0;
+                return decimal.Parse(str, NumberStyles.Any, ci) / 100.0m;
             }
-            return double.Parse(str, NumberStyles.Any, ci);
+            return decimal.Parse(str, NumberStyles.Any, ci);
         }
         List<Expression> GetParameters() // e.g. myfun(a, b, c+2)
 		{

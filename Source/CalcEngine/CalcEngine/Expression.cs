@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
+using raminrahimzada;
 
 namespace CalcEngine
 {
@@ -72,15 +73,15 @@ namespace CalcEngine
             var v = x.Evaluate();
             return v == null ? string.Empty : v.ToString();
         }
-        public static implicit operator double(Expression x)
+        public static implicit operator decimal(Expression x)
         {
             // evaluate
             var v = x.Evaluate();
 
-            // handle doubles
-            if (v is double)
+            // handle decimals
+            if (v is decimal)
             {
-                return (double)v;
+                return (decimal)v;
             }
 
             // handle booleans
@@ -92,7 +93,7 @@ namespace CalcEngine
             // handle dates
             if (v is DateTime)
             {
-                return ((DateTime)v).ToOADate();
+                return (decimal)((DateTime)v).ToOADate();
             }
 
             // handle nulls
@@ -102,7 +103,7 @@ namespace CalcEngine
             }
 
             // handle everything else
-            return (double)Convert.ChangeType(v, typeof(double), _ci);
+            return (decimal)Convert.ChangeType(v, typeof(decimal), _ci);
         }
         public static implicit operator bool(Expression x)
         {
@@ -121,14 +122,14 @@ namespace CalcEngine
                 return false;
             }
 
-            // handle doubles
-            if (v is double)
+            // handle decimals
+            if (v is decimal)
             {
-                return (double)v == 0 ? false : true;
+                return (decimal)v == 0 ? false : true;
             }
 
             // handle everything else
-            return (double)x == 0 ? false : true;
+            return (decimal)x == 0 ? false : true;
         }
         public static implicit operator DateTime(Expression x)
         {
@@ -141,10 +142,10 @@ namespace CalcEngine
                 return (DateTime)v;
             }
 
-            // handle doubles
-            if (v is double)
+            // handle decimals
+            if (v is decimal)
             {
-                return DateTime.FromOADate((double)x);
+                return DateTime.FromOADate((double)(decimal)x);
             }
 
             // handle everything else
@@ -208,9 +209,9 @@ namespace CalcEngine
             switch (_token.ID)
 			{
 				case TKID.ADD:
-                    return +(double)_expr;
+                    return +(decimal)_expr;
 				case TKID.SUB:
-                    return -(double)_expr;
+                    return -(decimal)_expr;
 			}
 			throw new ArgumentException("Bad expression.");
 		}
@@ -260,27 +261,27 @@ namespace CalcEngine
             switch (_token.ID)
 			{
 				case TKID.ADD: 
-                    return (double)_lft + (double)_rgt;
+                    return (decimal)_lft + (decimal)_rgt;
 				case TKID.SUB: 
-                    return (double)_lft - (double)_rgt;
+                    return (decimal)_lft - (decimal)_rgt;
 				case TKID.MUL: 
-                    return (double)_lft * (double)_rgt;
+                    return (decimal)_lft * (decimal)_rgt;
 				case TKID.DIV: 
-                    return (double)_lft / (double)_rgt;
+                    return (decimal)_lft / (decimal)_rgt;
 				case TKID.DIVINT: 
-                    return (double)(int)((double)_lft / (double)_rgt);
+                    return (decimal)(int)((decimal)_lft / (decimal)_rgt);
 				case TKID.MOD: 
-                    return (double)(int)((double)_lft % (double)_rgt);
+                    return (decimal)(int)((decimal)_lft % (decimal)_rgt);
 				case TKID.POWER:
-                    var a = (double)_lft;
-                    var b = (double)_rgt;
-                    if (b == 0.0) return 1.0;
-                    if (b == 0.5) return Math.Sqrt(a);
-                    if (b == 1.0) return a;
-                    if (b == 2.0) return a * a;
-                    if (b == 3.0) return a * a * a;
-                    if (b == 4.0) return a * a * a * a;
-                    return Math.Pow((double)_lft, (double)_rgt);
+                    var a = (decimal)_lft;
+                    var b = (decimal)_rgt;
+                    if (b == 0.0m) return 1.0m;
+                    if (b == 0.5m) return DecimalMath.Sqrt(a);
+                    if (b == 1.0m) return a;
+                    if (b == 2.0m) return a * a;
+                    if (b == 3.0m) return a * a * a;
+                    if (b == 4.0m) return a * a * a * a;
+                    return DecimalMath.Power((decimal)_lft, (decimal)_rgt);
 			}
 			throw new ArgumentException("Bad expression.");
 		}

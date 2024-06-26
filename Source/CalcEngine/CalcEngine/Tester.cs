@@ -15,9 +15,9 @@ namespace CalcEngine
             this.CultureInfo = System.Globalization.CultureInfo.InvariantCulture;
 
             // test internal operators
-            Test("0", 0.0);
-            Test("+1", 1.0);
-            Test("-1", -1.0);
+            Test("0", 0.0m);
+            Test("+1", 1.0m);
+            Test("-1", -1.0m);
             Test("1+1", 1 + 1.0);
             Test("1*2*3*4*5*6*7*8*9", 1 * 2 * 3 * 4 * 5 * 6 * 7 * 8 * 9.0);
             Test("1/(1+1/(1+1/(1+1/(1+1/(1+1/(1+1/(1+1/(1+1/(1+1/(1+1))))))))))", 1 / (1 + 1 / (1 + 1 / (1 + 1 / (1 + 1 / (1 + 1 / (1 + 1 / (1 + 1 / (1 + 1 / (1 + 1 / (1 + 1.0)))))))))));
@@ -59,9 +59,9 @@ namespace CalcEngine
             try
             {
                 var result = Evaluate(expression);
-                if (result is double && expectedResult is int)
+                if (result is decimal && expectedResult is int)
                 {
-                    expectedResult = (double)(int)expectedResult;
+                    expectedResult = (decimal)(int)expectedResult;
                 }
                 if (!object.Equals(result, expectedResult))
                 {

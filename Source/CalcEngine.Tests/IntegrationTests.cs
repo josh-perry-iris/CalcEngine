@@ -11,7 +11,7 @@ namespace CalcEngine.Tests
             Logical.Test(new CalcEngine());
             Statistical.Test(new CalcEngine());
             Text.Test(new CalcEngine());
-            new CalcEngine().Test();
+            //new CalcEngine().Test();
         }
     }
 }

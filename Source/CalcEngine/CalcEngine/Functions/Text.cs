@@ -211,7 +211,7 @@ namespace CalcEngine
         }
         static object _Text(List<Expression> p)
         {
-            return ((double)p[0]).ToString((string)p[1], CultureInfo.CurrentCulture);
+            return ((decimal)p[0]).ToString((string)p[1], CultureInfo.CurrentCulture);
         }
         static object Trim(List<Expression> p)
         {
@@ -223,7 +223,7 @@ namespace CalcEngine
         }
         static object Value(List<Expression> p)
         {
-            return double.Parse((string)p[0], NumberStyles.Any, CultureInfo.InvariantCulture);
+            return decimal.Parse((string)p[0], NumberStyles.Any, CultureInfo.InvariantCulture);
         }
     }
 }
